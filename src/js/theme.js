@@ -21,8 +21,8 @@ const Theme = {
   },
 };
 
-let current = Theme.LIGHT;
-current === Theme.LIGHT ? Theme.getLinghtTheme() : Theme.getDarkTheme();
+let current = localStorage.getItem('Theme');
+current !== Theme.DARK ? Theme.getLinghtTheme() : Theme.getDarkTheme();
 refs.isChangeTheme.addEventListener('change', changeTheme);
 
 function changeTheme() {
