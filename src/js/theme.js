@@ -7,28 +7,35 @@ const Theme = {
   LIGHT: 'light-theme',
   DARK: 'dark-theme',
 
-  getLinghtTheme() {
-    refs.isThemeWindow.classList.add(this.LIGHT);
-    refs.isThemeWindow.classList.remove(this.DARK);
-    localStorage.setItem('Theme', 'light-theme');
+  updateTheme(addTheme, removeTheme) {
+    refs.isThemeWindow.classList.add(addTheme);
+    refs.isThemeWindow.classList.remove(removeTheme);
   },
 
-  getDarkTheme() {
-    refs.isThemeWindow.classList.add(this.DARK);
-    refs.isThemeWindow.classList.remove(this.LIGHT);
-    localStorage.setItem('Theme', 'dark-theme');
-    refs.isChangeTheme.checked = true;
+  updateLocalStorage(key, value) {
+    localStorage.setItem(key, value);
   },
 };
 
+const { LIGHT, DARK } = Theme;
+
 let current = localStorage.getItem('Theme');
-current !== Theme.DARK ? Theme.getLinghtTheme() : Theme.getDarkTheme();
+
+if (current !== DARK) {
+  Theme.updateTheme(LIGHT, DARK);
+} else {
+  Theme.updateTheme(DARK, LIGHT);
+  refs.isChangeTheme.checked = true;
+}
+
 refs.isChangeTheme.addEventListener('change', changeTheme);
 
 function changeTheme() {
-  if (refs.isChangeTheme.checked === false) {
-    Theme.getLinghtTheme();
+  if (!refs.isChangeTheme.checked) {
+    Theme.updateTheme(LIGHT, DARK);
+    Theme.updateLocalStorage('Theme', 'light-theme');
   } else {
-    Theme.getDarkTheme();
+    Theme.updateTheme(DARK, LIGHT);
+    Theme.updateLocalStorage('Theme', 'dark-theme');
   }
 }
